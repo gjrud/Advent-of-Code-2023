@@ -1,9 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"slices"
 	"testing"
 )
+
+var isGameEqual = func(e1, e2 game) bool {
+	equal := e1.id == e2.id
+	if equal {
+		equal = slices.Equal(e1.sets, e2.sets)
+	}
+	return equal
+}
 
 var gamesArray = []game{
 	{[]gameSet{{4, 0, 3}, {1, 2, 6}, {0, 2, 0}}, 1},
@@ -26,7 +34,7 @@ func TestGamesParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if fmt.Sprint(games) != fmt.Sprint(gamesArray) {
+	if !slices.EqualFunc(games, gamesArray, isGameEqual) {
 		t.Fatalf("was expecting %d but got %d", gamesArray, games)
 	}
 }
@@ -40,7 +48,7 @@ func TestPossibleGames(t *testing.T) {
 	expectedSumIds := 8
 	possibleGames, sumIds := getPossibleGames(gamesArray, 12, 13, 14)
 
-	if fmt.Sprint(possibleGames) != fmt.Sprint(expectedGames) {
+	if !slices.EqualFunc(possibleGames, expectedGames, isGameEqual) {
 		t.Fatalf("MISMATCH\n%v\n%v", possibleGames, expectedGames)
 	}
 
@@ -60,7 +68,7 @@ func TestMinimumCubes(t *testing.T) {
 	expectedPower := 2286
 	minCubesRequiredPerGame, totalPower := getMinCubesRequired(gamesArray)
 
-	if fmt.Sprint(minCubesRequiredPerGame) != fmt.Sprint(expectedGames) {
+	if !slices.EqualFunc(minCubesRequiredPerGame, expectedGames, isGameEqual) {
 		t.Fatalf("MISMATCH\n%v\n%v", minCubesRequiredPerGame, expectedGames)
 	}
 
