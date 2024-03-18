@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"reflect"
+	"slices"
 	"testing"
 )
 
@@ -11,7 +11,7 @@ func TestReadInputToStringArray(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(lines, expected) {
+	if !slices.Equal(lines, expected) {
 		t.Fatalf("Was exepecting\n%v\nbut got instead\n%v", expected, lines)
 	}
 }
