@@ -35,7 +35,7 @@ func TestGamesParsing(t *testing.T) {
 	}
 
 	if !slices.EqualFunc(games, gamesArray, isGameEqual) {
-		t.Fatalf("was expecting %d but got %d", gamesArray, games)
+		t.Fatalf("MISMATCH\n%v\n%v", gamesArray, games)
 	}
 }
 
