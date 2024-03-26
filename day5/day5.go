@@ -21,10 +21,10 @@ type seed struct {
 	loc   int
 }
 
-type mapRange struct {
-	destStart int
-	origStart int
-	length    int
+type mapPiece struct {
+	shift int
+	start int
+	end   int
 }
 
 func main() {
@@ -51,21 +51,21 @@ func parseInput(input []string) ([]seed, error) {
 		return make([]seed, 0), err
 	}
 
-	allMaps := make([][]mapRange, 7)
+	mapFunctions := make([][]mapPiece, 7)
 	pos := 3
 	for i := 1; i < 8; i++ {
-		mapRanges, err := getMapRanges(input[pos:])
+		mapFunction, err := getMapFunction(input[pos:])
 		if err != nil {
 			return make([]seed, 0), err
 		}
-		allMaps[i-1] = mapRanges
-		pos += len(mapRanges) + 2
+		mapFunctions[i-1] = mapFunction
+		pos += len(mapFunction) + 2
 	}
 
 	for _, seedNum := range seedNums {
 		res := make([]int, 8)
 		res[0] = seedNum
-		for i, mapRanges := range allMaps {
+		for i, mapRanges := range mapFunctions {
 			res[i+1] = evaluateRanges(res[i], mapRanges)
 		}
 		seeds = append(seeds, seed{
@@ -96,37 +96,38 @@ func getSeedNums(s string) ([]int, error) {
 	return seedNums, nil
 }
 
-func getMapRanges(s []string) ([]mapRange, error) {
-	rangeMaps := make([]mapRange, 0)
+func getMapFunction(s []string) ([]mapPiece, error) {
+	rangeMaps := make([]mapPiece, 0)
 	for _, l := range s {
 		if l == "" {
 			break
 		}
 		fieldStrings := strings.Fields(l)
 		if len(fieldStrings) != 3 {
-			return make([]mapRange, 0), errors.New("too many fields for rangemap")
+			return make([]mapPiece, 0), errors.New("too many fields for rangemap")
 		}
 		fieldInts := make([]int, len(fieldStrings))
 		for i, v := range fieldStrings {
 			num, err := strconv.Atoi(v)
 			if err != nil {
-				return make([]mapRange, 0), err
+				return make([]mapPiece, 0), err
 			}
 			fieldInts[i] = num
 		}
-		rangeMaps = append(rangeMaps, mapRange{fieldInts[0], fieldInts[1], fieldInts[2]})
+		rangeMaps = append(rangeMaps, mapPiece{
+			shift: fieldInts[0] - fieldInts[1],
+			start: fieldInts[1],
+			end:   fieldInts[1] + fieldInts[2] - 1,
+		})
 	}
-	// sort.Slice(rangeMaps, func(i, j int) bool {
-	// 	return rangeMaps[i].origStart > rangeMaps[j].origStart
-	// })
 	return rangeMaps, nil
 }
 
-func evaluateRanges(input int, mapRanges []mapRange) int {
+func evaluateRanges(input int, mapRanges []mapPiece) int {
 	result := input
 	for _, mr := range mapRanges {
-		if input >= mr.origStart && input < mr.origStart+mr.length {
-			return mr.destStart + input - mr.origStart
+		if input >= mr.start && input <= mr.end {
+			return input + mr.shift
 		}
 	}
 	return result
