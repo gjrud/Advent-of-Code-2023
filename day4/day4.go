@@ -4,7 +4,6 @@ import (
 	"aoc2023/utils"
 	"fmt"
 	"log"
-	"strconv"
 	"strings"
 )
 
@@ -65,28 +64,16 @@ func parseInput(input []string) ([]card, error) {
 			}
 		})
 		winStrings := strings.Fields(parts[0])
-		winNums, err := getNums(winStrings)
+		winNums, err := utils.ConvertArrayToInt(winStrings)
 		if err != nil {
 			return make([]card, 0), err
 		}
 		numStrings := strings.Fields(parts[1])
-		nums, err := getNums(numStrings)
+		nums, err := utils.ConvertArrayToInt(numStrings)
 		if err != nil {
 			return make([]card, 0), err
 		}
 		cards = append(cards, card{winNums, nums, 1})
 	}
 	return cards, nil
-}
-
-func getNums(s []string) ([]int, error) {
-	nums := make([]int, len(s))
-	for j, ws := range s {
-		num, err := strconv.Atoi(ws)
-		if err != nil {
-			return make([]int, 0), err
-		}
-		nums[j] = num
-	}
-	return nums, nil
 }

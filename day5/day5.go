@@ -58,19 +58,14 @@ func parseInput(input []string) ([]int, error) {
 		}
 		locations = append(locations, result)
 	}
-
 	return locations, nil
 }
 
 func getSeedNums(s string) ([]int, error) {
-	seedNums := make([]int, 0)
 	s = strings.TrimPrefix(s, "seeds:")
-	for _, f := range strings.Fields(s) {
-		num, err := strconv.Atoi(f)
-		if err != nil {
-			return make([]int, 0), err
-		}
-		seedNums = append(seedNums, num)
+	seedNums, err := utils.ConvertArrayToInt(strings.Fields(s))
+	if err != nil {
+		return make([]int, 0), err
 	}
 	return seedNums, nil
 }

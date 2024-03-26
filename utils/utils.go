@@ -14,18 +14,6 @@ func ReadInputToStringArray(filepath string, sep string) ([]string, error) {
 	return output, nil
 }
 
-func ReadInputToIntArray(filepath string, sep string) ([]int, error) {
-	lines, err := readInput(filepath, sep)
-	if err != nil {
-		return make([]int, 0), err
-	}
-	output, err := convertArrayToInt(lines)
-	if err != nil {
-		return make([]int, 0), err
-	}
-	return output, nil
-}
-
 func readInput(filepath string, sep string) ([]string, error) {
 	f, err := os.ReadFile(filepath)
 	if err != nil {
@@ -35,7 +23,7 @@ func readInput(filepath string, sep string) ([]string, error) {
 	return lines, nil
 }
 
-func convertArrayToInt(lines []string) ([]int, error) {
+func ConvertArrayToInt(lines []string) ([]int, error) {
 	values := make([]int, 0)
 	for _, l := range lines {
 		v, err := ParseNumber(l)
@@ -53,15 +41,6 @@ func ParseNumber(s string) (int, error) {
 		return 0, err
 	}
 	return i, nil
-}
-
-func Insert[T comparable](a []T, index int, v T) []T {
-	if index == len(a) {
-		return append(a, v)
-	}
-	a = append(a[:index+1], a[index:]...)
-	a[index] = v
-	return a
 }
 
 func Max(a, b int) int {
