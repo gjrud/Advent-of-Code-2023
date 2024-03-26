@@ -10,17 +10,6 @@ import (
 	"strings"
 )
 
-type seed struct {
-	num   int
-	soil  int
-	fert  int
-	water int
-	light int
-	temp  int
-	humi  int
-	loc   int
-}
-
 type mapPiece struct {
 	shift int
 	start int
@@ -33,22 +22,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	seeds, err := parseInput(input)
+	locations, err := parseInput(input)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	sort.Slice(seeds, func(i, j int) bool {
-		return seeds[i].loc < seeds[j].loc
+	sort.Slice(locations, func(i, j int) bool {
+		return locations[i] < locations[j]
 	})
-	fmt.Println(seeds[0].loc)
+	fmt.Println(locations[0])
 }
 
-func parseInput(input []string) ([]seed, error) {
-	seeds := make([]seed, 0)
+func parseInput(input []string) ([]int, error) {
+	locations := make([]int, 0)
 	seedNums, err := getSeedNums(input[0])
 	if err != nil {
-		return make([]seed, 0), err
+		return make([]int, 0), err
 	}
 
 	mapFunctions := make([][]mapPiece, 7)
@@ -56,31 +45,21 @@ func parseInput(input []string) ([]seed, error) {
 	for i := 1; i < 8; i++ {
 		mapFunction, err := getMapFunction(input[pos:])
 		if err != nil {
-			return make([]seed, 0), err
+			return make([]int, 0), err
 		}
 		mapFunctions[i-1] = mapFunction
 		pos += len(mapFunction) + 2
 	}
 
 	for _, seedNum := range seedNums {
-		res := make([]int, 8)
-		res[0] = seedNum
-		for i, mapRanges := range mapFunctions {
-			res[i+1] = evaluateRanges(res[i], mapRanges)
+		result := seedNum
+		for _, mapRanges := range mapFunctions {
+			result = evaluateRanges(result, mapRanges)
 		}
-		seeds = append(seeds, seed{
-			res[0],
-			res[1],
-			res[2],
-			res[3],
-			res[4],
-			res[5],
-			res[6],
-			res[7],
-		})
+		locations = append(locations, result)
 	}
 
-	return seeds, nil
+	return locations, nil
 }
 
 func getSeedNums(s string) ([]int, error) {

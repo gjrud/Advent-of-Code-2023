@@ -6,12 +6,7 @@ import (
 	"testing"
 )
 
-var expectedSeeds = []seed{
-	{79, 81, 81, 81, 74, 78, 78, 82},
-	{14, 14, 53, 49, 42, 42, 43, 43},
-	{55, 57, 57, 53, 46, 82, 82, 86},
-	{13, 13, 52, 41, 34, 34, 35, 35},
-}
+var expectedLocations = []int{82, 43, 86, 35}
 
 func TestParseInput(t *testing.T) {
 	input := []string{
@@ -54,7 +49,7 @@ func TestParseInput(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if !slices.Equal(expectedSeeds, seeds) {
-		t.Fatalf("MISMATCH\n%v\n%v", expectedSeeds, seeds)
+	if !slices.Equal(expectedLocations, seeds) {
+		t.Fatalf("MISMATCH\n%v\n%v", expectedLocations, seeds)
 	}
 }
