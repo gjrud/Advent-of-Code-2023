@@ -6,7 +6,34 @@ import (
 	"testing"
 )
 
-var expectedLocations = []int{82, 43, 86, 35}
+var (
+	expectedSeeds    = []int{79, 14, 55, 13}
+	expectedLocation = 35
+	expectedMapFunc  = mapFunction{
+		[]mapPiece{{22, 0, 13},
+			{29, 14, 14},
+			{21, 15, 21},
+			{68, 22, 25},
+			{-25, 26, 43},
+			{17, 44, 49},
+			{-30, 50, 51},
+			{-8, 52, 53},
+			{31, 54, 58},
+			{35, 59, 61},
+			{-6, 62, 65},
+			{31, 66, 68},
+			{4, 69, 69},
+			{-70, 70, 70},
+			{3, 71, 81},
+			{-36, 82, 91},
+			{-32, 92, 92},
+			{-25, 93, 97},
+			{-31, 98, 98},
+			{-80, 99, 99},
+			{0, 100, 9223372036854775807},
+		},
+	}
+)
 
 func TestParseInput(t *testing.T) {
 	input := []string{
@@ -45,11 +72,15 @@ func TestParseInput(t *testing.T) {
 		"56 93 4",
 	}
 
-	seeds, err := parseInput(input)
+	seeds, mapFunc, err := parseInput(input)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if !slices.Equal(expectedLocations, seeds) {
-		t.Fatalf("MISMATCH\n%v\n%v", expectedLocations, seeds)
+
+	if !slices.Equal(seeds, expectedSeeds) {
+		t.Fatalf("MISMATCH\n%v\n%v", expectedSeeds, seeds)
+	}
+	if !slices.Equal(mapFunc.mapPieces, expectedMapFunc.mapPieces) {
+		t.Fatalf("MISMATCH\n%v\n%v", expectedMapFunc, mapFunc)
 	}
 }
