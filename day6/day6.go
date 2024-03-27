@@ -4,6 +4,7 @@ import (
 	"aoc2023/utils"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 )
 
@@ -12,16 +13,22 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	raceTimes, distances, err := parseInput(input)
+	raceTimes, distances, err := parseInputP1(input)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	margin := getMargin(raceTimes, distances)
 	fmt.Println(margin)
+
+	raceTime, distance, err := parseInputP2(input)
+	if err != nil {
+		log.Fatal(err)
+	}
+	count := getRecords(raceTime, distance)
+	fmt.Println(count)
 }
 
-func parseInput(input []string) ([]int, []int, error) {
+func parseInputP1(input []string) ([]int, []int, error) {
 	timeString := strings.TrimPrefix(input[0], "Time:")
 	raceTime, err := utils.ConvertArrayToInt(strings.Fields(timeString))
 	if err != nil {
@@ -31,6 +38,19 @@ func parseInput(input []string) ([]int, []int, error) {
 	distance, err := utils.ConvertArrayToInt(strings.Fields(distanceString))
 	if err != nil {
 		return nil, nil, err
+	}
+	return raceTime, distance, nil
+}
+func parseInputP2(input []string) (int, int, error) {
+	timeString := strings.TrimPrefix(input[0], "Time:")
+	raceTime, err := strconv.Atoi(strings.ReplaceAll(timeString, " ", ""))
+	if err != nil {
+		return 0, 0, err
+	}
+	distanceString := strings.TrimPrefix(input[1], "Distance:")
+	distance, err := strconv.Atoi(strings.ReplaceAll(distanceString, " ", ""))
+	if err != nil {
+		return 0, 0, err
 	}
 	return raceTime, distance, nil
 }
