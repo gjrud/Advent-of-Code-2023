@@ -5,21 +5,22 @@ import (
 	"testing"
 )
 
-var isGameEqual = func(e1, e2 game) bool {
-	equal := e1.id == e2.id
-	if equal {
-		equal = slices.Equal(e1.sets, e2.sets)
+var (
+	isGameEqual = func(e1, e2 game) bool {
+		equal := e1.id == e2.id
+		if equal {
+			equal = slices.Equal(e1.sets, e2.sets)
+		}
+		return equal
 	}
-	return equal
-}
-
-var gamesArray = []game{
-	{[]gameSet{{4, 0, 3}, {1, 2, 6}, {0, 2, 0}}, 1},
-	{[]gameSet{{0, 2, 1}, {1, 3, 4}, {0, 1, 1}}, 2},
-	{[]gameSet{{20, 8, 6}, {4, 13, 5}, {1, 5, 0}}, 3},
-	{[]gameSet{{3, 1, 6}, {6, 3, 0}, {14, 3, 15}}, 4},
-	{[]gameSet{{6, 3, 1}, {1, 2, 2}}, 5},
-}
+	knownGames = []game{
+		{[]gameSet{{4, 0, 3}, {1, 2, 6}, {0, 2, 0}}, 1},
+		{[]gameSet{{0, 2, 1}, {1, 3, 4}, {0, 1, 1}}, 2},
+		{[]gameSet{{20, 8, 6}, {4, 13, 5}, {1, 5, 0}}, 3},
+		{[]gameSet{{3, 1, 6}, {6, 3, 0}, {14, 3, 15}}, 4},
+		{[]gameSet{{6, 3, 1}, {1, 2, 2}}, 5},
+	}
+)
 
 func TestGamesParsing(t *testing.T) {
 	input := []string{
@@ -34,8 +35,8 @@ func TestGamesParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !slices.EqualFunc(games, gamesArray, isGameEqual) {
-		t.Fatalf("MISMATCH\n%v\n%v", gamesArray, games)
+	if !slices.EqualFunc(games, knownGames, isGameEqual) {
+		t.Fatalf("MISMATCH\n%v\n%v", knownGames, games)
 	}
 }
 
@@ -46,7 +47,7 @@ func TestPossibleGames(t *testing.T) {
 		{[]gameSet{{6, 3, 1}, {1, 2, 2}}, 5},
 	}
 	expectedSumIds := 8
-	possibleGames, sumIds := getPossibleGames(gamesArray, 12, 13, 14)
+	possibleGames, sumIds := getPossibleGames(knownGames, 12, 13, 14)
 
 	if !slices.EqualFunc(possibleGames, expectedGames, isGameEqual) {
 		t.Fatalf("MISMATCH\n%v\n%v", possibleGames, expectedGames)
@@ -66,7 +67,7 @@ func TestMinimumCubes(t *testing.T) {
 		{[]gameSet{{6, 3, 2}}, 5},
 	}
 	expectedPower := 2286
-	minCubesRequiredPerGame, totalPower := getMinCubesRequired(gamesArray)
+	minCubesRequiredPerGame, totalPower := getMinCubesRequired(knownGames)
 
 	if !slices.EqualFunc(minCubesRequiredPerGame, expectedGames, isGameEqual) {
 		t.Fatalf("MISMATCH\n%v\n%v", minCubesRequiredPerGame, expectedGames)
