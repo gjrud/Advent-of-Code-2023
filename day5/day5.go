@@ -71,8 +71,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	location := getBestLocation(seeds, mapFunc)
-	fmt.Println(location)
+	locationP1 := getBestLocationP1(seeds, mapFunc)
+	fmt.Println(locationP1)
+
+	locationP2 := getBestLocationP2(seeds, mapFunc)
+	fmt.Println(locationP2)
 }
 
 func parseInput(input []string) ([]int, mapFunction, error) {
@@ -173,7 +176,7 @@ func mergePieces(a, b mapPiece) mapPiece {
 	}
 }
 
-func getBestLocation(seeds []int, mapFunc mapFunction) int {
+func getBestLocationP1(seeds []int, mapFunc mapFunction) int {
 	bestLocation := int(^uint(0) >> 1)
 	for _, seed := range seeds {
 		for _, piece := range mapFunc.mapPieces {
@@ -181,6 +184,22 @@ func getBestLocation(seeds []int, mapFunc mapFunction) int {
 				continue
 			}
 			newLocation := seed + piece.shift
+			if bestLocation > newLocation {
+				bestLocation = newLocation
+			}
+		}
+	}
+	return bestLocation
+}
+
+func getBestLocationP2(seeds []int, mapFunc mapFunction) int {
+	bestLocation := int(^uint(0) >> 1)
+	for i := 0; i < len(seeds); i += 2 {
+		for _, piece := range mapFunc.mapPieces {
+			if seeds[i] > piece.end || seeds[i]+seeds[i+1]-1 < piece.start {
+				continue
+			}
+			newLocation := utils.Max(piece.start, seeds[i]) + piece.shift
 			if bestLocation > newLocation {
 				bestLocation = newLocation
 			}

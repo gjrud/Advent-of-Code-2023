@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	expectedSeeds    = []int{79, 14, 55, 13}
-	expectedLocation = 35
-	expectedMapFunc  = mapFunction{
+	expectedSeeds      = []int{79, 14, 55, 13}
+	expectedLocationP1 = 35
+	expectedMapFunc    = mapFunction{
 		[]mapPiece{{22, 0, 13},
 			{29, 14, 14},
 			{21, 15, 21},
@@ -33,6 +33,7 @@ var (
 			{0, 100, 9223372036854775807},
 		},
 	}
+	expectedLocationP2 = 46
 )
 
 func TestParseInput(t *testing.T) {
@@ -82,5 +83,16 @@ func TestParseInput(t *testing.T) {
 	}
 	if !slices.Equal(mapFunc.mapPieces, expectedMapFunc.mapPieces) {
 		t.Fatalf("MISMATCH\n%v\n%v", expectedMapFunc, mapFunc)
+	}
+}
+
+func TestBestLocation(t *testing.T) {
+	bestLocP1 := getBestLocationP1(expectedSeeds, expectedMapFunc)
+	if bestLocP1 != expectedLocationP1 {
+		t.Fatalf("MISMATCH\n%v\n%v", expectedLocationP1, bestLocP1)
+	}
+	bestLocP2 := getBestLocationP2(expectedSeeds, expectedMapFunc)
+	if bestLocP2 != expectedLocationP2 {
+		t.Fatalf("MISMATCH\n%v\n%v", expectedLocationP2, bestLocP2)
 	}
 }
