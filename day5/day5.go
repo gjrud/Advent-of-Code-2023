@@ -81,7 +81,7 @@ func main() {
 func parseInput(input []string) ([]int, mapFunction, error) {
 	seedNums, err := getSeedNums(input[0])
 	if err != nil {
-		return make([]int, 0), mapFunction{}, err
+		return nil, mapFunction{}, err
 	}
 
 	mapFunctions := make([]mapFunction, 7)
@@ -89,7 +89,7 @@ func parseInput(input []string) ([]int, mapFunction, error) {
 	for i := 1; i < 8; i++ {
 		mf, err := getMapFunction(input[pos:])
 		if err != nil {
-			return make([]int, 0), mapFunction{}, err
+			return nil, mapFunction{}, err
 		}
 		mapFunctions[i-1] = mf
 		pos += len(mf.mapPieces) + 2
@@ -103,7 +103,7 @@ func getSeedNums(s string) ([]int, error) {
 	s = strings.TrimPrefix(s, "seeds:")
 	seedNums, err := utils.ConvertArrayToInt(strings.Fields(s))
 	if err != nil {
-		return make([]int, 0), err
+		return nil, err
 	}
 	return seedNums, nil
 }

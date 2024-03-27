@@ -66,12 +66,12 @@ func parseInput(input []string) ([]card, error) {
 		winStrings := strings.Fields(parts[0])
 		winNums, err := utils.ConvertArrayToInt(winStrings)
 		if err != nil {
-			return make([]card, 0), err
+			return nil, err
 		}
 		numStrings := strings.Fields(parts[1])
 		nums, err := utils.ConvertArrayToInt(numStrings)
 		if err != nil {
-			return make([]card, 0), err
+			return nil, err
 		}
 		cards = append(cards, card{winNums, nums, 1})
 	}

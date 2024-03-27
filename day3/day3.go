@@ -51,7 +51,7 @@ func getPartNumbers(input []string) ([]part, error) {
 			if unicode.IsDigit(v) {
 				newPn, length, err := getNumbers(input, x, y)
 				if err != nil {
-					return make([]part, 0), err
+					return nil, err
 				}
 				if newPn != (part{}) {
 					partNums = append(partNums, newPn)

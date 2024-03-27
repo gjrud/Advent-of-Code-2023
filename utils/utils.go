@@ -9,7 +9,7 @@ import (
 func ReadInputToStringArray(filepath string, sep string) ([]string, error) {
 	output, err := readInput(filepath, sep)
 	if err != nil {
-		return make([]string, 0), err
+		return nil, err
 	}
 	return output, nil
 }
@@ -17,7 +17,7 @@ func ReadInputToStringArray(filepath string, sep string) ([]string, error) {
 func readInput(filepath string, sep string) ([]string, error) {
 	f, err := os.ReadFile(filepath)
 	if err != nil {
-		return make([]string, 0), err
+		return nil, err
 	}
 	lines := strings.Split(string(f), sep)
 	return lines, nil
@@ -28,7 +28,7 @@ func ConvertArrayToInt(lines []string) ([]int, error) {
 	for _, l := range lines {
 		v, err := ParseNumber(l)
 		if err != nil {
-			return make([]int, 0), err
+			return nil, err
 		}
 		values = append(values, v)
 	}
