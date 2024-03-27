@@ -150,7 +150,6 @@ func mergeMapFunctions(mf []mapFunction) mapFunction {
 			}
 		}
 		result.mapPieces = pieces
-		result.fillGaps()
 	}
 
 	return result
